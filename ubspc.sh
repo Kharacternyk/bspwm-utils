@@ -5,12 +5,12 @@ undoable_close() {
     sleep 10
 
     NODE="$(bspc query -N -n .hidden | tail -n1)"
-    [[ -n $NODE ]] && bspc node $NODE --close
+    [[ -n $NODE ]] && bspc node "$NODE" --close
 }
 
 undo_close() {
     NODE="$(bspc query -N -n .hidden | tail -n1)"
-    [[ -n $NODE ]] && bspc node $NODE --flag hidden=off
+    [[ -n $NODE ]] && bspc node "$NODE" --flag hidden=off
 }
 
 [[ $# == 0 ]] && exec bspc
@@ -28,6 +28,6 @@ case $1 in
         esac
         ;;
     *)
-        exec bspc $@
+        exec bspc "$@"
         ;;
 esac
