@@ -24,7 +24,7 @@ case $1 in
         shift
         case $1 in
             close) shift; undo_close "$@";;
-            *) echo "$1: is not an undoable operation"; exit 1
+            *) echo "$1 is not an undoable operation"; exit 1
         esac
         ;;
     *)
