@@ -1,16 +1,19 @@
 #!/bin/bash
+set -ue
 
 undoable_close() {
     bspc node "$@" --flag hidden
     sleep 10
 
-    NODE="$(bspc query -N -n .hidden | tail -n1)"
-    [[ -n $NODE ]] && bspc node "$NODE" --close
+    if NODE="$(bspc query -N -n .hidden | tail -n1)"; then
+        bspc node "$NODE" --close
+    fi
 }
 
 undo_close() {
-    NODE="$(bspc query -N -n .hidden | tail -n1)"
-    [[ -n $NODE ]] && bspc node "$NODE" --flag hidden=off
+    if NODE="$(bspc query -N -n .hidden | tail -n1)"; then
+        bspc node "$NODE" --flag hidden=off
+    fi
 }
 
 [[ $# == 0 ]] && exec bspc
