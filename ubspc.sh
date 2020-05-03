@@ -3,7 +3,12 @@ set -ue
 
 undoable_close() {
     bspc node "$@" --flag hidden
-    sleep 10
+
+    if [[ -z $UBSPC_CLOSE_TIMEOUT ]]; then
+        sleep 10
+    else
+        sleep $UBSPC_CLOSE_TIMEOUT
+    fi
 
     if NODE="$(bspc query -N -n .hidden | tail -n1)"; then
         bspc node "$NODE" --close
