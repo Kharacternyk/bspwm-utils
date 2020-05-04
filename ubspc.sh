@@ -1,8 +1,17 @@
 #!/bin/bash
-set -ue
+set -e
 
 undoable_close() {
-    bspc node "$@" --flag hidden
+    case $# in
+        0) NODE="$(bspc query -N -n .focused)" ;;
+        1) NODE="$1" ;;
+        *)
+            echo "Expected 0 or 1 argument: NODE"
+            exit 1
+            ;;
+    esac
+
+    bspc node "$NODE" --flag hidden
 
     if [[ -z $UBSPC_CLOSE_TIMEOUT ]]; then
         sleep 10
@@ -10,7 +19,7 @@ undoable_close() {
         sleep $UBSPC_CLOSE_TIMEOUT
     fi
 
-    if NODE="$(bspc query -N -n .hidden | tail -n1)"; then
+    if bspc query -N -n .hidden | grep $NODE; then
         bspc node "$NODE" --close
     fi
 }
