@@ -27,7 +27,7 @@ undoable_close() {
 }
 
 undo_close() {
-    NODE="$(ls -t $CLOSE_LIST)"
+    NODE="$(ls -t $CLOSE_LIST | head -n1)"
     if [[ -n $NODE ]]; then
         bspc node "$NODE" --flag hidden=off
         rm "$CLOSE_LIST/$NODE"
