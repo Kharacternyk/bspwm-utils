@@ -15,7 +15,11 @@ undoable_close() {
     esac
 
     bspc node "$NODE" --flag hidden
-    touch "$CLOSE_LIST/$NODE"
+
+    TIME="$(date +%s%N)"
+    mkdir -p "$CLOSE_LIST/$TIME"
+
+    touch "$CLOSE_LIST/$TIME/$NODE"
 
     if [[ -z $UBSPC_CLOSE_TIMEOUT ]]; then
         sleep 10
@@ -23,15 +27,19 @@ undoable_close() {
         sleep $UBSPC_CLOSE_TIMEOUT
     fi
 
-    rm "$CLOSE_LIST/$NODE" 2> /dev/null && bspc node "$NODE" --close
+    rm -r "$CLOSE_LIST/$TIME" 2> /dev/null && bspc node "$NODE" --close
 }
 
 undo_close() {
-    NODE="$(ls -t $CLOSE_LIST | head -n1)"
+    TIME="$(ls $CLOSE_LIST | tail -n1)"
+    NODE="$(ls $CLOSE_LIST/$TIME)"
+
     if [[ -n $NODE ]]; then
         bspc node "$NODE" --flag hidden=off
-        rm "$CLOSE_LIST/$NODE"
+        rm -r "$CLOSE_LIST/$TIME"
+        exit
     fi
+    exit 1
 }
 
 [[ $# == 0 ]] && exec bspc
