@@ -15,7 +15,8 @@ Usage
 Environmental variables
 =======================
 
-* ``UBSPC_CLOSE_TIMEOUT``: the timeout between hiding a node and closing it.
+* ``UBSPC_CLOSE_TIMEOUT``: the timeout between hiding a node and closing it
+  in seconds (10 if unset).
 
 .. LINKS
 .. _from AUR: https://aur.archlinux.org/packages/bspwm-undo-git/
