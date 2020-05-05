@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+CLOSE_LIST="/tmp/ubspc/close"
+mkdir -p "$CLOSE_LIST"
+
 undoable_close() {
     case $# in
         0) NODE="$(bspc query -N -n .focused)" ;;
@@ -12,6 +15,7 @@ undoable_close() {
     esac
 
     bspc node "$NODE" --flag hidden
+    touch "$CLOSE_LIST/$NODE"
 
     if [[ -z $UBSPC_CLOSE_TIMEOUT ]]; then
         sleep 10
@@ -19,14 +23,14 @@ undoable_close() {
         sleep $UBSPC_CLOSE_TIMEOUT
     fi
 
-    if bspc query -N -n .hidden | grep $NODE; then
-        bspc node "$NODE" --close
-    fi
+    rm "$CLOSE_LIST/$NODE" 2> /dev/null && bspc node "$NODE" --close
 }
 
 undo_close() {
-    if NODE="$(bspc query -N -n .hidden | tail -n1)"; then
+    NODE="$(ls -t $CLOSE_LIST)"
+    if [[ -n $NODE ]]; then
         bspc node "$NODE" --flag hidden=off
+        rm "$CLOSE_LIST/$NODE"
     fi
 }
 
