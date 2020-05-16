@@ -9,7 +9,7 @@ undoable_close() {
         0) NODE="$(bspc query -N -n .focused)" ;;
         1) NODE="$1" ;;
         *)
-            echo "Expected 0 or 1 argument: NODE"
+            echo "Expected 0 or 1 argument: NODE" >&2
             exit 1
             ;;
     esac
@@ -57,7 +57,7 @@ case $1 in
                 undo_close "$@"
                 ;;
             *)
-                echo "$1 is not an undoable operation"
+                echo "$1 is not an undoable operation" >&2
                 exit 1
                 ;;
         esac
