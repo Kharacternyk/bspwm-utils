@@ -40,7 +40,7 @@ undo_close() {
     NODE="$(ls $CLOSE_LIST/$TIME)"
 
     if [[ -n $NODE ]]; then
-        bspc node "$NODE" --flag hidden=off -f
+        bspc node "$NODE" --flag hidden=off -d focused -f
         rm -r "$CLOSE_LIST/$TIME"
         exit
     fi
