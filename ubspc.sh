@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-CLOSE_LIST="/tmp/ubspc/close"
+CLOSE_LIST="${XDG_CACHE_HOME:-$HOME/.cache}/ubspc/close"
 mkdir -p "$CLOSE_LIST"
 
 undoable_close() {
