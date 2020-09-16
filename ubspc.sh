@@ -14,7 +14,12 @@ undoable_close() {
             ;;
     esac
 
+    # We move the node to a temporary workspace,
+    # so that BSPWM removal_adjustment take place.
+    bspc monitor -a __ubspc_tmp__
+    bspc node "$NODE" -d __ubspc_tmp__
     bspc node "$NODE" --flag hidden
+    bspc desktop __ubspc_tmp__ -r
 
     TIME="$(date +%s%N)"
     mkdir -p "$CLOSE_LIST/$TIME"
