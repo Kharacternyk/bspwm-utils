@@ -32,8 +32,8 @@ undoable_close() {
 }
 
 undo_close() {
-    TIME="$(ls $CLOSE_LIST | tail -n1)"
-    NODE="$(ls $CLOSE_LIST/$TIME)"
+    TIME="$(ls "$CLOSE_LIST" | tail -n1)"
+    NODE="$(ls "$CLOSE_LIST/$TIME")"
 
     if [[ -n $NODE ]]; then
         bspc node "$NODE" --flag hidden=off -d focused -f
@@ -45,7 +45,7 @@ undo_close() {
 
 [[ $# == 0 ]] && exec bspc
 
-case $1 in
+case "$1" in
     close)
         shift
         undoable_close "$@"
