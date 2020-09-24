@@ -15,7 +15,7 @@ undoable_close() {
     esac
 
     # We move the node to a temporary workspace,
-    # so that BSPWM removal_adjustment take place.
+    # so that BSPWM removal_adjustment takes place.
     bspc monitor -a __ubspc_tmp__
     bspc node "$NODE" -d __ubspc_tmp__
     bspc node "$NODE" --flag hidden
@@ -26,11 +26,7 @@ undoable_close() {
 
     touch "$CLOSE_LIST/$TIME/$NODE"
 
-    if [[ -z $UBSPC_CLOSE_TIMEOUT ]]; then
-        sleep 10
-    else
-        sleep $UBSPC_CLOSE_TIMEOUT
-    fi
+    sleep "${UBSPC_CLOSE_TIMEOUT:-10}"
 
     rm -r "$CLOSE_LIST/$TIME" 2> /dev/null && bspc node "$NODE" --close
 }
