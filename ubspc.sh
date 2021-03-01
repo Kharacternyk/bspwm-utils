@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 CLOSE_LIST="${XDG_RUNTIME_DIR}/ubspc/close"
 mkdir -p "$CLOSE_LIST"
