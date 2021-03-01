@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CLOSE_LIST="${XDG_CACHE_HOME:-$HOME/.cache}/ubspc/close"
+CLOSE_LIST="${XDG_RUNTIME_DIR}/ubspc/close"
 mkdir -p "$CLOSE_LIST"
 
 undoable_close() {
