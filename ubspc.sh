@@ -42,6 +42,38 @@ undo_close() {
     exit 1
 }
 
+branch_desktop() {
+    case $# in
+        0)
+            NEW_DESKTOP_NAME="$(date +%s%N)"
+            SOURCE_DESKTOP_NAME="$(bspc query -D --names -d .focused)"
+            ;;
+        1)
+            NEW_DESKTOP_NAME="$1"
+            SOURCE_DESKTOP_NAME="$(bspc query -D --names -d .focused)"
+            ;;
+        2)
+            NEW_DESKTOP_NAME="$1"
+            SOURCE_DESKTOP_NAME="$2"
+            ;;
+        *)
+            echo "Expected 0, 1 or 2 arguments: NEW_DESKTOP_NAME, SOURCE_DESKTOP_NAME" >&2
+            exit 1
+            ;;
+    esac
+
+    bspc monitor -a "$NEW_DESKTOP_NAME"
+
+    SOURCE_DESKTOP_INDEX=$(bspc query -D --names -d .local | sed -n "/$SOURCE_DESKTOP_NAME/=")
+    NEW_DESKTOP_INDEX=$((SOURCE_DESKTOP_INDEX + 1))
+    DESKTOPS=$(
+        bspc query -D --names -d .local |
+            sed "/$NEW_DESKTOP_NAME/d;${NEW_DESKTOP_INDEX}i\\$NEW_DESKTOP_NAME"
+    )
+
+    bspc monitor -o $DESKTOPS
+}
+
 [[ $# == 0 ]] && exec bspc
 
 case "$1" in
@@ -51,7 +83,7 @@ case "$1" in
         ;;
     undo)
         shift
-        case $1 in
+        case "$1" in
             close)
                 shift
                 undo_close "$@"
@@ -61,6 +93,10 @@ case "$1" in
                 exit 1
                 ;;
         esac
+        ;;
+    branch)
+        shift
+        branch_desktop "$@"
         ;;
     *)
         exec bspc "$@"
