@@ -6,7 +6,7 @@
   `NEW_DESKTOP_NAME` on the focused monitor and place it after `SOURCE_DESKTOP_NAME`,
   defaults to the current timestamp and the focused desktop respectively.
 
-### Environmental variables
+### Environment variables
 
 * `UBSPC_CLOSE_TIMEOUT`: the timeout between hiding a node and closing it
   in seconds (10 if unset).
